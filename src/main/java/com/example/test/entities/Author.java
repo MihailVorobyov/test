@@ -34,5 +34,6 @@ public class Author {
 		name = "books_authors",
 		joinColumns = @JoinColumn(name = "author_id"),
 		inverseJoinColumns = @JoinColumn(name = "book_id"))
+	@ToString.Exclude
 	private List<Book> books;
 }

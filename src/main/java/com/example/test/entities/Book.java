@@ -23,7 +23,7 @@ public class Book {
 	private Long id;
 	
 	@Column(name = "author")
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name = "books_authors",
 		joinColumns = @JoinColumn(name = "book_id"),
