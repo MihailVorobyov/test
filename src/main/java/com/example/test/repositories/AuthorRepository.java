@@ -11,4 +11,9 @@ public interface AuthorRepository extends CrudRepository<Author, Long> {
 	
 	@Override
 	Set<Author> findAll();
+	
+	Author findFirstByLastName(String lastName);
+	
+	@Override
+	<S extends Author> Set<S> saveAll(Iterable<S> entities);
 }

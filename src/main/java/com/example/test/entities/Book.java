@@ -8,12 +8,13 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
@@ -23,9 +24,6 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-//
-//	@Column(name = "authors")
-//	private Long author_id;
 	
 	@Column(name = "ISBN")
 	private String ISBN;
@@ -42,12 +40,15 @@ public class Book {
 	@Column(name = "add_date")
 	private LocalDate addDate;
 	
-	@OneToMany(mappedBy = "books")
-	private Set<Author> authors;
+//	@OneToMany(mappedBy = "books")
+	@Embedded
+
+	@ManyToOne
+	@JoinColumn(name = "author_id")
+	private Author author;
 	
 	public Book(Long id, String ISBN, String title, Integer publicationYear, String genre, LocalDate addDate) {
 		this.id = id;
-//		this.author_id = author_id;
 		this.ISBN = ISBN;
 		this.title = title;
 		this.publicationYear = publicationYear;
@@ -66,5 +67,18 @@ public class Book {
 	@Override
 	public int hashCode() {
 		return getClass().hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return "Book{" +
+			"id=" + id +
+			", ISBN='" + ISBN + '\'' +
+			", title='" + title + '\'' +
+			", publicationYear=" + publicationYear +
+			", genre='" + genre + '\'' +
+			", addDate=" + addDate +
+			", author=" + author +
+			'}';
 	}
 }
