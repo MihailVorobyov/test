@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -50,7 +48,6 @@ public class AuthorRepositoryTest {
 		Author aPushkin = new Author(null, "Александр", "Сергеевич", "Пушкин");
 		repository.save(aPushkin);
 		
-		Set<Author> authors = repository.findAll();
 		repository.deleteById(1L);
 		assertFalse(repository.existsById(1L));
 	}
