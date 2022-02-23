@@ -1,18 +1,20 @@
 package com.example.test.entities;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "books")
 public class Book {
@@ -21,14 +23,9 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	
-	@Column(name = "author")
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-		name = "books_authors",
-		joinColumns = @JoinColumn(name = "book_id"),
-		inverseJoinColumns = @JoinColumn(name = "author_id"))
-	private List<Author> authors;
+//
+//	@Column(name = "authors")
+//	private Long author_id;
 	
 	@Column(name = "ISBN")
 	private String ISBN;
@@ -36,14 +33,27 @@ public class Book {
 	@Column(name = "title")
 	private String title;
 	
-	@Column(name = "year")
-	private Integer year;
+	@Column(name = "publication_year")
+	private Integer publicationYear;
 	
 	@Column(name = "genre")
 	private String genre;
 	
-	@Column(name = "addDate")
-	private Date addDate;
+	@Column(name = "add_date")
+	private LocalDate addDate;
+	
+	@OneToMany(mappedBy = "books")
+	private Set<Author> authors;
+	
+	public Book(Long id, String ISBN, String title, Integer publicationYear, String genre, LocalDate addDate) {
+		this.id = id;
+//		this.author_id = author_id;
+		this.ISBN = ISBN;
+		this.title = title;
+		this.publicationYear = publicationYear;
+		this.genre = genre;
+		this.addDate = addDate;
+	}
 	
 	@Override
 	public boolean equals(Object o) {
