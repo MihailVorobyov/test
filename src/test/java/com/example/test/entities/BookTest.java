@@ -2,11 +2,9 @@ package com.example.test.entities;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 public class BookTest {
 	
@@ -59,7 +57,7 @@ public class BookTest {
 	
 	@Test
 	void shouldSetAndGetAddDate() {
-		LocalDate addDate = LocalDate.of(2022, 02, 24);
+		LocalDate addDate = LocalDate.of(2022, 2, 24);
 		book.setAddDate(addDate);
 		
 		assertEquals(24, book.getAddDate().getDayOfMonth());
