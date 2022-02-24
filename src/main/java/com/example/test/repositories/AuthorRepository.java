@@ -4,16 +4,16 @@ import com.example.test.entities.Author;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.List;
 
 @Repository
 public interface AuthorRepository extends CrudRepository<Author, Long> {
 	
 	@Override
-	Set<Author> findAll();
+	List<Author> findAll();
 	
 	Author findFirstByLastName(String lastName);
 	
 	@Override
-	<S extends Author> Set<S> saveAll(Iterable<S> entities);
+	<S extends Author> List<S> saveAll(Iterable<S> entities);
 }

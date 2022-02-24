@@ -2,14 +2,16 @@ package com.example.test.services;
 
 import com.example.test.entities.Author;
 import com.example.test.repositories.AuthorRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -81,6 +83,7 @@ public class AuthorServiceTest {
 		assertFalse(authorService.delete(a4));
 	}
 	
+	//Test get()
 	@Test
 	void shouldReturnAuthorById() {
 		Optional<Author>  a1 = Optional.of((new Author(1L, "1", "1", "1")));
@@ -101,6 +104,7 @@ public class AuthorServiceTest {
 		assertNull(authorService.get(4L));
 	}
 	
+	//Test saveAll()
 	@Test
 	void shouldReturnListWith3AuthorsWithIdsAreNotNull() {
 		Author a1 = new Author(null, "1", "1", "1");
