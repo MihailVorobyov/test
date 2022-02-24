@@ -33,7 +33,7 @@ public class Author {
 	private String lastName;
 	
 	@OneToMany(mappedBy = "author")
-	private List<Book> books;
+	private List<Book> books = new ArrayList<>();
 	
 	public void addBook(Book book) {
 		if (book == null || book.getId() == null) {
@@ -51,7 +51,6 @@ public class Author {
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
-		this.books = new ArrayList<>();
 	}
 	
 	@Override
