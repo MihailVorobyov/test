@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -97,7 +96,7 @@ public class BookRepositoryTest {
 		aPushkin = authorRepository.save(aPushkin);
 		lTolstoy = authorRepository.save(lTolstoy);
 		
-		Set<Author> authors = authorRepository.saveAll(Arrays.asList(lTolstoy, aPushkin));
+		List<Author> authors = authorRepository.saveAll(Arrays.asList(lTolstoy, aPushkin));
 		
 		List<Book> pushkinBooks = bookRepository.findAllByAuthor(aPushkin);
 		assertEquals(2, pushkinBooks.size());
