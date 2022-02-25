@@ -43,10 +43,9 @@ public class AuthorServiceTest {
 	
 	// Test save() as update exists author
 	@Test
-	void shouldReturnTrueWhenSaveExistsAuthor() {
-		Author authorBeforeSave = new Author(1L, "Фёдор", "Михайлович", "Достоевский");
-		Mockito.doReturn(new Author(1L, "Фёдор", "Михайлович", "Достоевский")).when(authorRepositoryMock).save(authorBeforeSave);
-		assertTrue(authorService.save(authorBeforeSave));
+	void shouldReturnFalseWhenSaveExistsAuthor() {
+		Author authorExists = new Author(1L, "Фёдор", "Михайлович", "Достоевский");
+		assertFalse(authorService.save(authorExists));
 	}
 	
 	// Test getAll()
