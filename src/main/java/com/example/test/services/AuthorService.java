@@ -22,26 +22,29 @@ public class AuthorService {
 			throw new NullPointerException("Author to save is null!");
 		}
 		
-		Author a = repository.save(author);
+		Author a;
 		
 		if (author.getId() == null) {
+			a = repository.save(author);
 			return a.getId() != null;
-		} else {
-			return author.equals(a);
 		}
+		
+		return false;
 	}
 	
 	public List<Author> getAll() {
 		return repository.findAll();
 	}
 	
-	public boolean delete(Author author) {
-		Long id = author.getId();
+	public boolean delete(Long id) {
+		if (id == null) {
+			throw new NullPointerException("Id must not be null!");
+		}
 		if (!repository.existsById(id)) {
 			return false;
 		} else {
 			repository.deleteById(id);
-			return true;
+			return repository.existsById(id);
 		}
 	}
 	

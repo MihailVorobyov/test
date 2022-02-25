@@ -48,7 +48,7 @@ public class AuthorServiceTest {
 		assertFalse(authorService.save(authorExists));
 	}
 	
-	// Test getAll()
+	//Test getAll()
 	@Test
 	void shouldReturnListWith4Authors() {
 		List<Author> authorList = new ArrayList<>(Arrays.asList(new Author(), new Author(), new Author(), new Author()));
@@ -62,25 +62,24 @@ public class AuthorServiceTest {
 		Author a1 = new Author(1L, "01", "02", "03");
 		Author a2 = new Author(2L, "11", "12", "13");
 		Author a3 = new Author(3L, "21", "22", "23");
-		
+		List<Author> authors = new ArrayList<>(Arrays.asList(a1, a2, a3));
 		//This author not saved;
 		Author a4 = new Author(4L, "31", "32", "33");
 		
-		Mockito.doNothing().when(authorRepositoryMock).deleteById(1L);
-		Mockito.doReturn(true).when(authorRepositoryMock).existsById(1L);
-		assertTrue(authorService.delete(a1));
-		
-		Mockito.doNothing().when(authorRepositoryMock).deleteById(2L);
-		Mockito.doReturn(true).when(authorRepositoryMock).existsById(2L);
-		assertTrue(authorService.delete(a2));
-		
-		Mockito.doNothing().when(authorRepositoryMock).deleteById(3L);
-		Mockito.doReturn(true).when(authorRepositoryMock).existsById(3L);
-		assertTrue(authorService.delete(a3));
-		
+		Mockito.doAnswer(invocation -> authors.remove(a1)).when(authorRepositoryMock).deleteById(1L);
+		Mockito.doAnswer(invocation -> authors.remove(a2)).when(authorRepositoryMock).deleteById(2L);
+		Mockito.doAnswer(invocation -> authors.remove(a3)).when(authorRepositoryMock).deleteById(3L);
 		Mockito.doNothing().when(authorRepositoryMock).delete(a4);
-		Mockito.doReturn(false).when(authorRepositoryMock).existsById(4L);
-		assertFalse(authorService.delete(a4));
+		
+		Mockito.doReturn(authors.contains(a1)).when(authorRepositoryMock).existsById(1L);
+		Mockito.doReturn(authors.contains(a2)).when(authorRepositoryMock).existsById(2L);
+		Mockito.doReturn(authors.contains(a3)).when(authorRepositoryMock).existsById(3L);
+		Mockito.doReturn(authors.contains(a4)).when(authorRepositoryMock).existsById(4L);
+		
+		assertTrue(authorService.delete(1L));
+		assertTrue(authorService.delete(2L));
+		assertTrue(authorService.delete(3L));
+		assertFalse(authorService.delete(4L));
 	}
 	
 	//Test get()
