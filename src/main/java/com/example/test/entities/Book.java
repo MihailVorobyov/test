@@ -3,15 +3,10 @@ package com.example.test.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -40,9 +35,6 @@ public class Book {
 	@Column(name = "add_date")
 	private LocalDate addDate;
 	
-//	@OneToMany(mappedBy = "books")
-	@Embedded
-
 	@ManyToOne
 	@JoinColumn(name = "author_id")
 	private Author author;
@@ -61,12 +53,18 @@ public class Book {
 		if (this == o) return true;
 		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
 		Book book = (Book) o;
-		return id != null && Objects.equals(id, book.id);
+		return this.ISBN.equals(book.getISBN()) && this.title.equals(book.getTitle())
+			&& this.publicationYear.equals(book.getPublicationYear()) && this.genre.equals(book.getGenre());
 	}
 	
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		int result = getClass().hashCode();
+		result = 5 * result + ISBN.hashCode();
+		result = 5 * result + title.hashCode();
+		result = 5 * result + publicationYear.hashCode();
+		result = 5 * result + genre.hashCode();
+		return result;
 	}
 	
 	@Override
