@@ -5,7 +5,9 @@ import com.example.test.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.util.Collection;
 
 @Service
 public class AuthorService {
@@ -17,42 +19,86 @@ public class AuthorService {
 		this.repository = repository;
 	}
 	
-	public boolean save(Author author) {
+	public Response save(Author author) {
+		Status status = Status.NOT_MODIFIED;
+		
 		if (author == null) {
 			throw new NullPointerException("Author to save is null!");
 		}
 		
-		Author a;
+		Author result = repository.save(author);
 		
 		if (author.getId() == null) {
-			a = repository.save(author);
-			return a.getId() != null;
+			if (result.getId() != null) {
+				status = Status.OK;
+			}
+		} else {
+			if (result.equals(author)) {
+				status = Status.OK;
+			}
 		}
 		
-		return false;
+		return Response
+			.status(status)
+			.entity(result)
+			.build();
 	}
 	
-	public List<Author> getAll() {
-		return repository.findAll();
+	public Response getAll() {
+		Status status = Status.NOT_FOUND;
+		
+		Collection<Author> result = repository.findAll();
+		if (!result.isEmpty()) {
+			status = Status.OK;
+		}
+		
+		return Response
+			.status(status)
+			.entity(result)
+			.build();
 	}
 	
-	public boolean delete(Long id) {
+	public Response delete(Long id) {
+		Status status = Status.NOT_FOUND;
+		
 		if (id == null) {
 			throw new NullPointerException("Id must not be null!");
 		}
-		if (!repository.existsById(id)) {
-			return false;
-		} else {
+		if (repository.existsById(id)) {
 			repository.deleteById(id);
-			return repository.existsById(id);
+			status = Status.NO_CONTENT;
 		}
+		
+		return Response
+			.status(status)
+			.build();
 	}
 	
-	public Author get(Long id) {
-		return repository.findById(id).orElse(null);
+	public Response get(Long id) {
+		Status status = Status.NOT_FOUND;
+		
+		Author result = repository.findById(id).orElse(new Author());
+		if (result.getId() != null) {
+			status = Status.OK;
+		}
+		
+		return Response
+			.status(status)
+			.entity(result)
+			.build();
 	}
 	
-	public List<Author> saveAll(Iterable<Author> authors) {
-		return repository.saveAll(authors);
+	public Response saveAll(Collection<Author> authors) {
+		Status status = Status.NOT_MODIFIED;
+		
+		Collection<Author> result = repository.saveAll(authors);
+		if (!result.isEmpty()) {
+			status = Status.OK;
+		}
+		
+		return Response
+			.status(status)
+			.entity(result)
+			.build();
 	}
 }
