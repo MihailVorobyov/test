@@ -9,7 +9,6 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -32,7 +31,7 @@ public class Author {
 	@Column(name = "last_name")
 	private String lastName;
 	
-	@OneToMany(mappedBy = "author")
+	@OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
 	private List<Book> books = new ArrayList<>();
 	
 	public void addBook(Book book) {
@@ -58,7 +57,8 @@ public class Author {
 		if (this == o) return true;
 		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
 		Author author = (Author) o;
-		return id != null && Objects.equals(id, author.id);
+		return this.firstName.equals(author.firstName) && this.middleName.equals(author.middleName)
+			&& this.lastName.equals(author.lastName) && this.books.equals(author.books);
 	}
 	
 	@Override
