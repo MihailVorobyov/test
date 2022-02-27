@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
 	
-	List<Book> findAllByAuthor(Author author);
+	List<Book> findAllByAuthorId(Long id);
 	
-	List<Book> findOneByTitle(String title);
+	List<Book> findAllByTitleLike(String title);
 	
 	@Override
 	List<Book> findAll();

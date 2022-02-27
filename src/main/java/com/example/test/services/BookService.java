@@ -1,11 +1,13 @@
 package com.example.test.services;
 
+import com.example.test.entities.Author;
 import com.example.test.entities.Book;
 import com.example.test.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import java.util.Collection;
 
 @Service
@@ -19,7 +21,7 @@ public class BookService {
 	}
 	
 	public Response save(Book book) {
-		Response.Status status = Response.Status.NOT_MODIFIED;
+		Status status = Status.NOT_MODIFIED;
 		
 		if (book == null) {
 			throw new NullPointerException("Book to save is null!");
@@ -29,11 +31,11 @@ public class BookService {
 		
 		if (book.getId() == null) {
 			if (result.getId() != null) {
-				status = Response.Status.OK;
+				status = Status.OK;
 			}
 		} else {
 			if (result.equals(book)) {
-				status = Response.Status.OK;
+				status = Status.OK;
 			}
 		}
 		
@@ -44,11 +46,39 @@ public class BookService {
 	}
 	
 	public Response getAll() {
-		Response.Status status = Response.Status.NOT_FOUND;
+		Status status = Status.NOT_FOUND;
 		
 		Collection<Book> result = repository.findAll();
 		if (!result.isEmpty()) {
-			status = Response.Status.OK;
+			status = Status.OK;
+		}
+		
+		return Response
+			.status(status)
+			.entity(result)
+			.build();
+	}
+	
+	public Response getAllByAuthorId(Long id) {
+		Status status = Status.NOT_FOUND;
+		
+		Collection<Book> result = repository.findAllByAuthorId(id);
+		if (!result.isEmpty()) {
+			status = Status.OK;
+		}
+		
+		return Response
+			.status(status)
+			.entity(result)
+			.build();
+	}
+	
+	public Response getAllByTitle(String title) {
+		Status status = Status.NOT_FOUND;
+		
+		Collection<Book> result = repository.findAllByTitleLike("%" + title + "%");
+		if (!result.isEmpty()) {
+			status = Status.OK;
 		}
 		
 		return Response
@@ -58,14 +88,14 @@ public class BookService {
 	}
 	
 	public Response delete(Long id) {
-		Response.Status status = Response.Status.NOT_FOUND;
+		Status status = Status.NOT_FOUND;
 		
 		if (id == null) {
 			throw new NullPointerException("Id must not be null!");
 		}
 		if (repository.existsById(id)) {
 			repository.deleteById(id);
-			status = Response.Status.NO_CONTENT;
+			status = Status.NO_CONTENT;
 		}
 		
 		return Response
@@ -74,11 +104,11 @@ public class BookService {
 	}
 	
 	public Response get(Long id) {
-		Response.Status status = Response.Status.NOT_FOUND;
+		Status status = Status.NOT_FOUND;
 		
 		Book result = repository.findById(id).orElse(new Book());
 		if (result.getId() != null) {
-			status = Response.Status.OK;
+			status = Status.OK;
 		}
 		
 		return Response
@@ -88,11 +118,11 @@ public class BookService {
 	}
 	
 	public Response saveAll(Collection<Book> books) {
-		Response.Status status = Response.Status.NOT_MODIFIED;
+		Status status = Status.NOT_MODIFIED;
 		
 		Collection<Book> result = repository.saveAll(books);
 		if (!result.isEmpty()) {
-			status = Response.Status.OK;
+			status = Status.OK;
 		}
 		
 		return Response

@@ -26,8 +26,7 @@ public class BookServiceTest {
 	// Test save() with null
 	@Test
 	void shouldThrowNullPointerExceptionWhenBookIsNull() {
-		Book book = null;
-		assertThrowsExactly(NullPointerException.class, () -> bookService.save(book));
+		assertThrowsExactly(NullPointerException.class, () -> bookService.save(null));
 	}
 	
 	// Test save() with new book
@@ -74,6 +73,41 @@ public class BookServiceTest {
 		Mockito.doReturn(booksList).when(bookRepositoryMock).findAll();
 		Collection<Book> books = (Collection<Book>) bookService.getAll().getEntity();
 		assertEquals(4, books.size());
+	}
+	
+	// Test getAllByAuthorId()
+	@Test
+	void shouldReturnListWith2Books() {
+		Book b1 = new Book(1L, "123-5-1", "Война и мир1", 1834, "Роман", LocalDate.now());
+		Book b2 = new Book(2L, "123-5-2", "Война и мир2", 1834, "Роман", LocalDate.now());
+		Book b3 = new Book(3L, "123-5-3", "Война и мир3", 1834, "Роман", LocalDate.now());
+		List<Book> booksList = new ArrayList<>(Arrays.asList(b1, b2, b3));
+		
+		Mockito.doReturn(booksList).when(bookRepositoryMock).findAllByAuthorId(1L);
+		Collection<Book> books = (Collection<Book>) bookService.getAllByAuthorId(1L).getEntity();
+		assertEquals(3, books.size());
+		
+		Mockito.doReturn(new ArrayList<Book>()).when(bookRepositoryMock).findAllByAuthorId(2L);
+		books = (Collection<Book>) bookService.getAllByAuthorId(2L).getEntity();
+		assertTrue(books.isEmpty());
+	}
+	
+	// Test getAllByTitle()
+	@Test
+	void shouldReturnListWith1Books() {
+		Book b1 = new Book(1L, "123-5-1", "Война и мир. Том 1", 1834, "Роман", LocalDate.now());
+		Book b2 = new Book(2L, "123-5-1", "Война и мир. Том 2", 1834, "Роман", LocalDate.now());
+		Book b3 = new Book(3L, "123-5-1", "Война и мир. Том 3", 1834, "Роман", LocalDate.now());
+		
+		List<Book> booksList = new ArrayList<>(Arrays.asList(b1, b2, b3));
+		
+		Mockito.doReturn(booksList).when(bookRepositoryMock).findAllByTitleLike("%Война и мир%");
+		Collection<Book> books = (Collection<Book>) bookService.getAllByTitle("Война и мир").getEntity();
+		assertEquals(3, books.size());
+		
+		Mockito.doReturn(new ArrayList<Book>()).when(bookRepositoryMock).findAllByTitleLike("%Юность%");
+		books = (Collection<Book>) bookService.getAllByTitle("Юность").getEntity();
+		assertTrue(books.isEmpty());
 	}
 
 	// Test delete(null)
@@ -155,4 +189,6 @@ public class BookServiceTest {
 		assertEquals("Война и мир2", result.get(1).getTitle());
 		assertEquals("Война и мир3", result.get(2).getTitle());
 	}
+	
+	
 }
