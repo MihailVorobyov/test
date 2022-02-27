@@ -63,7 +63,12 @@ public class Author {
 	
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		int result = getClass().hashCode();
+		result = 7 * result + firstName.hashCode();
+		result = 7 * result + middleName.hashCode();
+		result = 7 * result + lastName.hashCode();
+		result = 7 * result + books.hashCode();
+		return result;
 	}
 	
 	@Override

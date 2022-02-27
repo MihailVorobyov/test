@@ -62,7 +62,7 @@ public class AuthorTest {
 	}
 	
 	@Test
-	void shouldReturnTrueWhenEqual() {
+	void shouldReturnTrueWhenEquals() {
 		Author author1 = new Author(null, "Фёдор", "Михайлович", "Достоевский");
 		Author author2 = new Author(1L, "Фёдор", "Михайлович", "Достоевский");
 		Author author3 = new Author(1L, "Олег", "Михайлович", "Достоевский");
@@ -81,5 +81,18 @@ public class AuthorTest {
 		
 		author1.addBook(new Book(1L, "123-5-1", "Война и мир1", 1834, "Роман", LocalDate.now()));
 		assertNotEquals(author1, author2);
+	}
+	
+	@Test
+	void shouldReturnSameHashCodeIfObjectsEquals() {
+		Author a1 = new Author(null, "Фёдор", "Михайлович", "Достоевский");
+		Author a2 = new Author(1L, "Фёдор", "Михайлович", "Достоевский");
+		
+		assertEquals(a1.hashCode(), a2.hashCode());
+		for (int i = 0; i < 15; i++) {
+			assertEquals(a1.hashCode(), new Author(1L, "Фёдор", "Михайлович", "Достоевский").hashCode());
+		}
+		
+		assertNotEquals(a1.hashCode(), new Author(1L, "Федор", "Михайлович", "Достоевский").hashCode());
 	}
 }
