@@ -1,6 +1,7 @@
 package com.example.test.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class Author {
 	@Column(name = "last_name")
 	private String lastName;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
 	private List<Book> books = new ArrayList<>();
 	
@@ -39,7 +41,7 @@ public class Author {
 			throw new NullPointerException("Wrong book!");
 		}
 		if (book.getAuthor() != null) {
-			throw  new IllegalArgumentException("Book already has a author!");
+			throw new IllegalArgumentException("Book already has a author!");
 		}
 		book.setAuthor(this);
 		this.books.add(book);

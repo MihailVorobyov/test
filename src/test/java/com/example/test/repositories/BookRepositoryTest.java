@@ -77,32 +77,24 @@ public class BookRepositoryTest {
 	void shouldReturnAllBooksByAuthor() {
 		
 		assertTrue(bookRepository.findAll().isEmpty());
+		assertTrue(authorRepository.findAll().isEmpty());
 		
 		Author aPushkin = new Author(null, "Александр", "Сергеевич", "Пушкин");
 		Author lTolstoy = new Author(null, "Лев", "Николаевич", "Толстой");
 		
-		Book book1 = bookRepository.save(new Book(null, "123-5-1", "Война и мир1", 1834, "Роман", LocalDate.now()));
-		Book book2 = bookRepository.save(new Book(null, "123-5-2", "Война и мир2", 1834, "Роман", LocalDate.now()));
-		Book book3 = bookRepository.save(new Book(null, "123-5-3", "Война и мир3", 1834, "Роман", LocalDate.now()));
-		Book book4 = bookRepository.save(new Book(null, "123-5-4", "Сказки1", 1850, "Сказки", LocalDate.now()));
-		Book book5 = bookRepository.save(new Book(null, "123-5-5", "Сказки2", 1850, "Сказки", LocalDate.now()));
-		
-		lTolstoy.addBook(book1);
-		lTolstoy.addBook(book2);
-		lTolstoy.addBook(book3);
-		
-		aPushkin.addBook(book4);
-		aPushkin.addBook(book5);
-		
 		aPushkin = authorRepository.save(aPushkin);
 		lTolstoy = authorRepository.save(lTolstoy);
 		
-		List<Author> authors = authorRepository.saveAll(Arrays.asList(lTolstoy, aPushkin));
-		
-		List<Book> pushkinBooks = bookRepository.findAllByAuthorId(1L);
+		bookRepository.save(new Book(null, "123-5-1", "Война и мир1", 1834, "Роман", LocalDate.now(), lTolstoy));
+		bookRepository.save(new Book(null, "123-5-2", "Война и мир2", 1834, "Роман", LocalDate.now(), lTolstoy));
+		bookRepository.save(new Book(null, "123-5-3", "Война и мир3", 1834, "Роман", LocalDate.now(), lTolstoy));
+		bookRepository.save(new Book(null, "123-5-4", "Сказки1", 1850, "Сказки", LocalDate.now(), aPushkin));
+		bookRepository.save(new Book(null, "123-5-5", "Сказки2", 1850, "Сказки", LocalDate.now(), aPushkin));
+
+		List<Book> pushkinBooks = bookRepository.findAllByAuthorId(aPushkin.getId());
 		assertEquals(2, pushkinBooks.size());
 		
-		List<Book> tolstoyBooks = bookRepository.findAllByAuthorId(2L);
+		List<Book> tolstoyBooks = bookRepository.findAllByAuthorId(lTolstoy.getId());
 		assertEquals(3, tolstoyBooks.size());
 	}
 	

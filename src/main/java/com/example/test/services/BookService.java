@@ -1,11 +1,11 @@
 package com.example.test.services;
 
-import com.example.test.entities.Author;
 import com.example.test.entities.Book;
 import com.example.test.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.util.Collection;
@@ -26,7 +26,7 @@ public class BookService {
 		if (book == null) {
 			throw new NullPointerException("Book to save is null!");
 		}
-		
+
 		Book result = repository.save(book);
 		
 		if (book.getId() == null) {
@@ -41,6 +41,7 @@ public class BookService {
 		
 		return Response
 			.status(status)
+			.type(MediaType.APPLICATION_JSON_TYPE)
 			.entity(result)
 			.build();
 	}
@@ -55,6 +56,7 @@ public class BookService {
 		
 		return Response
 			.status(status)
+			.type(MediaType.APPLICATION_JSON_TYPE)
 			.entity(result)
 			.build();
 	}
@@ -69,6 +71,7 @@ public class BookService {
 		
 		return Response
 			.status(status)
+			.type(MediaType.APPLICATION_JSON_TYPE)
 			.entity(result)
 			.build();
 	}
@@ -83,6 +86,7 @@ public class BookService {
 		
 		return Response
 			.status(status)
+			.type(MediaType.APPLICATION_JSON_TYPE)
 			.entity(result)
 			.build();
 	}
@@ -113,6 +117,7 @@ public class BookService {
 		
 		return Response
 			.status(status)
+			.type(MediaType.APPLICATION_JSON_TYPE)
 			.entity(result)
 			.build();
 	}
@@ -127,6 +132,7 @@ public class BookService {
 		
 		return Response
 			.status(status)
+			.type(MediaType.APPLICATION_JSON_TYPE)
 			.entity(result)
 			.build();
 	}

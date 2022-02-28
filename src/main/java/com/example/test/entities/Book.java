@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -32,7 +33,8 @@ public class Book {
 	@Column(name = "genre")
 	private String genre;
 	
-	@Column(name = "add_date")
+	@Column(name = "add_date", updatable = false)
+	@CreationTimestamp
 	private LocalDate addDate;
 	
 	@ManyToOne
@@ -46,6 +48,16 @@ public class Book {
 		this.publicationYear = publicationYear;
 		this.genre = genre;
 		this.addDate = addDate;
+	}
+	
+	public Book(Long id, String ISBN, String title, Integer publicationYear, String genre, LocalDate addDate, Author author) {
+		this.id = id;
+		this.ISBN = ISBN;
+		this.title = title;
+		this.publicationYear = publicationYear;
+		this.genre = genre;
+		this.addDate = addDate;
+		this.author = author;
 	}
 	
 	@Override

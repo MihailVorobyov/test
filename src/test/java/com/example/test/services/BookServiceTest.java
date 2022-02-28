@@ -26,7 +26,8 @@ public class BookServiceTest {
 	// Test save() with null
 	@Test
 	void shouldThrowNullPointerExceptionWhenBookIsNull() {
-		assertThrowsExactly(NullPointerException.class, () -> bookService.save(null));
+		Book book = null;
+		assertThrowsExactly(NullPointerException.class, () -> bookService.save(book));
 	}
 	
 	// Test save() with new book
