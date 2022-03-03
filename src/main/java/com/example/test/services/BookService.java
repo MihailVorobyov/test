@@ -79,7 +79,7 @@ public class BookService {
 	public Response getAllByTitle(String title) {
 		Status status = Status.NOT_FOUND;
 		
-		Collection<Book> result = repository.findAllByTitleLike("%" + title + "%");
+		Collection<Book> result = repository.findAllByTitleIgnoreCaseContaining(title);
 		if (!result.isEmpty()) {
 			status = Status.OK;
 		}
