@@ -11,7 +11,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 	
 	List<Book> findAllByAuthorId(Long id);
 	
-	List<Book> findAllByTitleLike(String title);
+	List<Book> findAllByTitleIgnoreCaseContaining(String title);
 	
 	@Override
 	List<Book> findAll();
