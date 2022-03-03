@@ -111,13 +111,13 @@ public class BookRepositoryTest {
 		List<Book> books = new ArrayList<>(Arrays.asList(book1, book2, book3, book4, book5));
 		bookRepository.saveAll(books);
 		
-		List<Book> warAndPeace1 = bookRepository.findAllByTitleLike("%Война и мир%");
+		List<Book> warAndPeace1 = bookRepository.findAllByTitleIgnoreCaseContaining("Война и мир");
 		assertEquals(3, warAndPeace1.size());
 		
-		List<Book> tales1 = bookRepository.findAllByTitleLike("%Сказки%");
+		List<Book> tales1 = bookRepository.findAllByTitleIgnoreCaseContaining("Сказки");
 		assertEquals(2, tales1.size());
 
-		List<Book> aKarenina = bookRepository.findAllByTitleLike("%Анна Каренина%");
+		List<Book> aKarenina = bookRepository.findAllByTitleIgnoreCaseContaining("Анна Каренина");
 		assertTrue(aKarenina.isEmpty());
 	}
 }

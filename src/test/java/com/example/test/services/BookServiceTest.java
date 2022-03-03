@@ -102,11 +102,11 @@ public class BookServiceTest {
 		
 		List<Book> booksList = new ArrayList<>(Arrays.asList(b1, b2, b3));
 		
-		Mockito.doReturn(booksList).when(bookRepositoryMock).findAllByTitleLike("%Война и мир%");
+		Mockito.doReturn(booksList).when(bookRepositoryMock).findAllByTitleIgnoreCaseContaining("Война и мир");
 		Collection<Book> books = (Collection<Book>) bookService.getAllByTitle("Война и мир").getEntity();
 		assertEquals(3, books.size());
 		
-		Mockito.doReturn(new ArrayList<Book>()).when(bookRepositoryMock).findAllByTitleLike("%Юность%");
+		Mockito.doReturn(new ArrayList<Book>()).when(bookRepositoryMock).findAllByTitleIgnoreCaseContaining("Юность");
 		books = (Collection<Book>) bookService.getAllByTitle("Юность").getEntity();
 		assertTrue(books.isEmpty());
 	}
